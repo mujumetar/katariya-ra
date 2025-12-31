@@ -210,7 +210,7 @@ function Services() {
     }
 
     const options = {
-      key: 'rzp_test_YOUR_API_KEY_ID',
+      key: 'rzp_test_RyDHMQIKCcSHug',
       amount: amount,
       currency: 'INR',
       name: 'Katariya Research Analyst',
@@ -440,15 +440,136 @@ function About() {
 }
 
 // Contact Component
-function Contact() {
-  const [formData, setFormData] = useState({ name: '', email: '', message: '' })
-  const [submitStatus, setSubmitStatus] = useState('')
+// function Contact() {
+//   const [formData, setFormData] = useState({ name: '', email: '', message: '' })
+//   const [submitStatus, setSubmitStatus] = useState('')
 
-  const handleSubmit = (e) => {
+//   const handleSubmit = (e) => {
+//     e.preventDefault()
+//     setSubmitStatus('Message sent successfully!')
+//     setFormData({ name: '', email: '', message: '' })
+//     setTimeout(() => setSubmitStatus(''), 3000)
+//   }
+
+//   return (
+//     <section id="contact" className="relative py-32 bg-black overflow-hidden">
+//       {/* Background */}
+//       <div className="absolute inset-0">
+//         <div className="absolute inset-0 bg-gradient-to-b from-black via-purple-950 to-black"></div>
+//         <div className="absolute top-0 left-1/3 w-96 h-96 bg-purple-500 rounded-full filter blur-3xl opacity-20"></div>
+//         <div className="absolute bottom-0 right-1/3 w-96 h-96 bg-cyan-500 rounded-full filter blur-3xl opacity-20"></div>
+//       </div>
+
+//       <div className="container mx-auto px-6 relative z-10">
+//         <div className="max-w-2xl mx-auto">
+//           <div className="text-center mb-16">
+//             <div className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-500/20 to-cyan-500/20 backdrop-blur-xl px-6 py-3 rounded-full mb-6 border border-purple-500/30">
+//               <Mail className="w-5 h-5 text-purple-400" />
+//               <span className="text-purple-400 text-sm font-bold tracking-wider">CONNECT WITH EXCELLENCE</span>
+//             </div>
+//             <h3 className="text-6xl md:text-7xl font-black mb-6 text-white">Let's Create</h3>
+//             <p className="text-2xl text-transparent bg-gradient-to-r from-purple-400 to-cyan-400 bg-clip-text font-black">
+//               Something Extraordinary
+//             </p>
+//           </div>
+
+//           <div className="relative">
+//             {/* Glow effect */}
+//             <div className="absolute -inset-1 bg-gradient-to-r from-purple-500 to-cyan-500 rounded-3xl blur-2xl opacity-20"></div>
+
+//             <div className="relative bg-gradient-to-br from-gray-900 to-gray-800 rounded-3xl p-10 border border-gray-700">
+//               <div className="space-y-6">
+//                 <div className="relative">
+//                   <input
+//                     type="text"
+//                     placeholder="Your Name"
+//                     value={formData.name}
+//                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+//                     className="w-full p-5 bg-black bg-opacity-50 backdrop-blur-xl border border-gray-700 rounded-2xl focus:outline-none focus:border-cyan-500 text-white placeholder-gray-500 text-lg transition-all"
+//                     required
+//                   />
+//                 </div>
+//                 <div className="relative">
+//                   <input
+//                     type="email"
+//                     placeholder="Your Email"
+//                     value={formData.email}
+//                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+//                     className="w-full p-5 bg-black bg-opacity-50 backdrop-blur-xl border border-gray-700 rounded-2xl focus:outline-none focus:border-cyan-500 text-white placeholder-gray-500 text-lg transition-all"
+//                     required
+//                   />
+//                 </div>
+//                 <div className="relative">
+//                   <textarea
+//                     placeholder="Tell us about your vision..."
+//                     value={formData.message}
+//                     onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+//                     className="w-full p-5 bg-black bg-opacity-50 backdrop-blur-xl border border-gray-700 rounded-2xl focus:outline-none focus:border-cyan-500 text-white placeholder-gray-500 text-lg transition-all resize-none"
+//                     rows="6"
+//                     required
+//                   />
+//                 </div>
+//                 <button
+//                   onClick={handleSubmit}
+//                   className="group w-full bg-gradient-to-r from-purple-500 to-cyan-500 text-white px-8 py-5 rounded-2xl font-bold text-lg hover:shadow-2xl hover:shadow-purple-500/50 transition-all duration-300 flex items-center justify-center gap-3 relative overflow-hidden"
+//                 >
+//                   <span className="relative z-10">Send Message</span>
+//                   <ArrowRight className="w-6 h-6 relative z-10 group-hover:translate-x-2 transition-transform" />
+//                   <div className="absolute inset-0 bg-gradient-to-r from-cyan-500 to-blue-600 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+//                 </button>
+//                 {submitStatus && (
+//                   <p className="text-cyan-400 text-center font-bold text-lg">{submitStatus}</p>
+//                 )}
+//               </div>
+//             </div>
+//           </div>
+//         </div>
+//       </div>
+//     </section>
+//   )
+// }
+
+function Contact() {
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    message: ""
+  })
+  const [submitStatus, setSubmitStatus] = useState("")
+  const [loading, setLoading] = useState(false)
+
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    setSubmitStatus('Message sent successfully!')
-    setFormData({ name: '', email: '', message: '' })
-    setTimeout(() => setSubmitStatus(''), 3000)
+    setLoading(true)
+
+    const data = new FormData()
+    data.append("access_key", "29131fa0-ee9b-40c1-ab0a-ad718507d96a")
+    data.append("name", formData.name)
+    data.append("email", formData.email)
+    data.append("message", formData.message)
+    data.append("subject", "New Contact Form Submission")
+    data.append("from_name", "Katariya Research Analyst")
+
+    try {
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        body: data
+      })
+
+      const result = await response.json()
+
+      if (result.success) {
+        setSubmitStatus("Message sent successfully 🚀")
+        setFormData({ name: "", email: "", message: "" })
+      } else {
+        setSubmitStatus("Something went wrong. Try again.")
+      }
+    } catch (error) {
+      setSubmitStatus("Network error. Please try later.")
+    }
+
+    setLoading(false)
+    setTimeout(() => setSubmitStatus(""), 3000)
   }
 
   return (
@@ -456,73 +577,85 @@ function Contact() {
       {/* Background */}
       <div className="absolute inset-0">
         <div className="absolute inset-0 bg-gradient-to-b from-black via-purple-950 to-black"></div>
-        <div className="absolute top-0 left-1/3 w-96 h-96 bg-purple-500 rounded-full filter blur-3xl opacity-20"></div>
-        <div className="absolute bottom-0 right-1/3 w-96 h-96 bg-cyan-500 rounded-full filter blur-3xl opacity-20"></div>
+        <div className="absolute top-0 left-1/3 w-96 h-96 bg-purple-500 rounded-full blur-3xl opacity-20"></div>
+        <div className="absolute bottom-0 right-1/3 w-96 h-96 bg-cyan-500 rounded-full blur-3xl opacity-20"></div>
       </div>
 
       <div className="container mx-auto px-6 relative z-10">
         <div className="max-w-2xl mx-auto">
+          {/* Header */}
           <div className="text-center mb-16">
             <div className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-500/20 to-cyan-500/20 backdrop-blur-xl px-6 py-3 rounded-full mb-6 border border-purple-500/30">
               <Mail className="w-5 h-5 text-purple-400" />
-              <span className="text-purple-400 text-sm font-bold tracking-wider">CONNECT WITH EXCELLENCE</span>
+              <span className="text-purple-400 text-sm font-bold tracking-wider">
+                CONNECT WITH EXCELLENCE
+              </span>
             </div>
-            <h3 className="text-6xl md:text-7xl font-black mb-6 text-white">Let's Create</h3>
+            <h3 className="text-6xl md:text-7xl font-black mb-6 text-white">
+              Let's Create
+            </h3>
             <p className="text-2xl text-transparent bg-gradient-to-r from-purple-400 to-cyan-400 bg-clip-text font-black">
               Something Extraordinary
             </p>
           </div>
 
-          <div className="relative">
-            {/* Glow effect */}
+          {/* Form */}
+          <form onSubmit={handleSubmit} className="relative">
             <div className="absolute -inset-1 bg-gradient-to-r from-purple-500 to-cyan-500 rounded-3xl blur-2xl opacity-20"></div>
 
-            <div className="relative bg-gradient-to-br from-gray-900 to-gray-800 rounded-3xl p-10 border border-gray-700">
-              <div className="space-y-6">
-                <div className="relative">
-                  <input
-                    type="text"
-                    placeholder="Your Name"
-                    value={formData.name}
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    className="w-full p-5 bg-black bg-opacity-50 backdrop-blur-xl border border-gray-700 rounded-2xl focus:outline-none focus:border-cyan-500 text-white placeholder-gray-500 text-lg transition-all"
-                    required
-                  />
-                </div>
-                <div className="relative">
-                  <input
-                    type="email"
-                    placeholder="Your Email"
-                    value={formData.email}
-                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    className="w-full p-5 bg-black bg-opacity-50 backdrop-blur-xl border border-gray-700 rounded-2xl focus:outline-none focus:border-cyan-500 text-white placeholder-gray-500 text-lg transition-all"
-                    required
-                  />
-                </div>
-                <div className="relative">
-                  <textarea
-                    placeholder="Tell us about your vision..."
-                    value={formData.message}
-                    onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                    className="w-full p-5 bg-black bg-opacity-50 backdrop-blur-xl border border-gray-700 rounded-2xl focus:outline-none focus:border-cyan-500 text-white placeholder-gray-500 text-lg transition-all resize-none"
-                    rows="6"
-                    required
-                  />
-                </div>
-                <button
-                  onClick={handleSubmit}
-                  className="group w-full bg-gradient-to-r from-purple-500 to-cyan-500 text-white px-8 py-5 rounded-2xl font-bold text-lg hover:shadow-2xl hover:shadow-purple-500/50 transition-all duration-300 flex items-center justify-center gap-3 relative overflow-hidden"
-                >
-                  <span className="relative z-10">Send Message</span>
-                  <ArrowRight className="w-6 h-6 relative z-10 group-hover:translate-x-2 transition-transform" />
-                  <div className="absolute inset-0 bg-gradient-to-r from-cyan-500 to-blue-600 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                </button>
-                {submitStatus && (
-                  <p className="text-cyan-400 text-center font-bold text-lg">{submitStatus}</p>
-                )}
-              </div>
+            <div className="relative bg-gradient-to-br from-gray-900 to-gray-800 rounded-3xl p-10 border border-gray-700 space-y-6">
+              <input
+                type="text"
+                placeholder="Your Name"
+                value={formData.name}
+                onChange={(e) =>
+                  setFormData({ ...formData, name: e.target.value })
+                }
+                className="w-full p-5 bg-black bg-opacity-50 border border-gray-700 rounded-2xl text-white placeholder-gray-500 text-lg focus:outline-none focus:border-cyan-500"
+                required
+              />
+
+              <input
+                type="email"
+                placeholder="Your Email"
+                value={formData.email}
+                onChange={(e) =>
+                  setFormData({ ...formData, email: e.target.value })
+                }
+                className="w-full p-5 bg-black bg-opacity-50 border border-gray-700 rounded-2xl text-white placeholder-gray-500 text-lg focus:outline-none focus:border-cyan-500"
+                required
+              />
+
+              <textarea
+                rows="6"
+                placeholder="Tell us about your vision..."
+                value={formData.message}
+                onChange={(e) =>
+                  setFormData({ ...formData, message: e.target.value })
+                }
+                className="w-full p-5 bg-black bg-opacity-50 border border-gray-700 rounded-2xl text-white placeholder-gray-500 text-lg focus:outline-none focus:border-cyan-500 resize-none"
+                required
+              />
+
+              <button
+                type="submit"
+                disabled={loading}
+                className="group w-full bg-gradient-to-r from-purple-500 to-cyan-500 text-white px-8 py-5 rounded-2xl font-bold text-lg flex items-center justify-center gap-3 relative overflow-hidden hover:shadow-2xl hover:shadow-purple-500/50 transition-all disabled:opacity-60"
+              >
+                <span className="relative z-10">
+                  {loading ? "Sending..." : "Send Message"}
+                </span>
+                <ArrowRight className="w-6 h-6 relative z-10 group-hover:translate-x-2 transition-transform" />
+                <div className="absolute inset-0 bg-gradient-to-r from-cyan-500 to-blue-600 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+              </button>
+
+              {submitStatus && (
+                <p className="text-cyan-400 text-center font-bold text-lg">
+                  {submitStatus}
+                </p>
+              )}
             </div>
-          </div>
+          </form>
         </div>
       </div>
     </section>
