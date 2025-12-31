@@ -291,52 +291,52 @@ function Services() {
                 </div>
               </div>
 
-              <h4 className="text-4xl font-black mb-4 text-white">Elite Consultation</h4>
-              <p className="text-purple-200 mb-6 text-lg leading-relaxed">
+              <h4 className="text-3xl sm:text-4xl font-black mb-4 text-white">Elite Consultation</h4>
+              <p className="text-purple-200 mb-6 text-base sm:text-lg leading-relaxed">
                 Exclusive 1-on-1 strategic guidance from industry veterans with proven track records
               </p>
 
               {/* Price */}
               <div className="flex items-baseline mb-8">
-                <span className="text-6xl font-black bg-gradient-to-r from-purple-300 to-pink-400 bg-clip-text text-transparent">₹1000</span>
+                <span className="text-3xl sm:text-4xl md:text-6xl font-black bg-gradient-to-r from-purple-300 to-pink-400 bg-clip-text text-transparent">₹1000</span>
                 <span className="text-purple-300 ml-3 text-lg">/session</span>
               </div>
 
               {/* Features */}
               <ul className="space-y-4 mb-10">
                 <li className="flex items-start gap-4 text-purple-100">
-                  <div className="mt-1 w-6 h-6 bg-gradient-to-br from-purple-400 to-pink-500 rounded-full flex items-center justify-center flex-shrink-0">
-                    <CheckCircle className="w-4 h-4 text-white" />
+                  <div className="mt-1 w-4 h-4 bg-gradient-to-br from-purple-400 to-pink-500 rounded-full flex items-center justify-center flex-shrink-0">
+                    <CheckCircle className="w-3 h-3 sm:w-4 sm:h-4 text-white" />
                   </div>
-                  <span className="text-lg">90-minute executive session</span>
+                  <span className="text-sm sm:text-lg">90-minute executive session</span>
                 </li>
                 <li className="flex items-start gap-4 text-purple-100">
-                  <div className="mt-1 w-6 h-6 bg-gradient-to-br from-purple-400 to-pink-500 rounded-full flex items-center justify-center flex-shrink-0">
-                    <CheckCircle className="w-4 h-4 text-white" />
+                  <div className="mt-1 w-4 h-4 bg-gradient-to-br from-purple-400 to-pink-500 rounded-full flex items-center justify-center flex-shrink-0">
+                    <CheckCircle className="w-3 h-3 sm:w-4 sm:h-4 text-white" />
                   </div>
-                  <span className="text-lg">Custom strategic roadmap</span>
+                  <span className="text-sm sm:text-lg">Custom strategic roadmap</span>
                 </li>
                 <li className="flex items-start gap-4 text-purple-100">
-                  <div className="mt-1 w-6 h-6 bg-gradient-to-br from-purple-400 to-pink-500 rounded-full flex items-center justify-center flex-shrink-0">
-                    <CheckCircle className="w-4 h-4 text-white" />
+                  <div className="mt-1 w-4 h-4 bg-gradient-to-br from-purple-400 to-pink-500 rounded-full flex items-center justify-center flex-shrink-0">
+                    <CheckCircle className="w-3 h-3 sm:w-4 sm:h-4 text-white" />
                   </div>
-                  <span className="text-lg">Priority email support (30 days)</span>
+                  <span className="text-sm sm:text-lg">Priority email support (30 days)</span>
                 </li>
                 <li className="flex items-start gap-4 text-purple-100">
-                  <div className="mt-1 w-6 h-6 bg-gradient-to-br from-purple-400 to-pink-500 rounded-full flex items-center justify-center flex-shrink-0">
-                    <CheckCircle className="w-4 h-4 text-white" />
+                  <div className="mt-1 w-4 h-4 bg-gradient-to-br from-purple-400 to-pink-500 rounded-full flex items-center justify-center flex-shrink-0">
+                    <CheckCircle className="w-3 h-3 sm:w-4 sm:h-4 text-white" />
                   </div>
-                  <span className="text-lg">Exclusive industry insights</span>
+                  <span className="text-sm sm:text-lg">Exclusive industry insights</span>
                 </li>
               </ul>
 
               <button
                 onClick={() => handlePayment(100000, 'Consultation Session')}
-                className="group w-full bg-white text-purple-900 px-8 py-5 rounded-2xl font-bold text-lg hover:shadow-2xl hover:shadow-purple-500/50 transition-all duration-300 disabled:opacity-50 flex items-center justify-center gap-3"
+                className="group w-full bg-white text-purple-900 px-4 py-3 sm:px-8 sm:py-5 rounded-2xl font-bold text-lg hover:shadow-2xl hover:shadow-purple-500/50 transition-all duration-300 disabled:opacity-50 flex items-center justify-center gap-3"
                 disabled={!razorpayLoaded}
               >
-                <span>{razorpayLoaded ? 'Book Elite Session' : 'Loading...'}</span>
-                <ArrowRight className="w-6 h-6 group-hover:translate-x-2 transition-transform" />
+                <span className='text-sm sm:text-lg'>{razorpayLoaded ? 'Book Elite Session' : 'Loading...'}</span>
+                <ArrowRight className="w-4 h-4 sm:w-6 sm:h-6 group-hover:translate-x-2 transition-transform" />
               </button>
             </div>
           </div>
