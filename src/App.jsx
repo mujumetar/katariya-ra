@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { TrendingUp, BarChart3, Users, Mail, CheckCircle, ArrowRight, Sparkles, Star, Zap, Award, Globe } from 'lucide-react'
+import { toast, ToastContainer } from 'react-toastify'
 
 // Header Component
 
@@ -25,8 +26,7 @@ function Header({ scrollToSection }) {
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 
       ${scrolled ? 'bg-black bg-opacity-10 backdrop-blur-xl border-opacity-10' : 'bg-transparent'}`}
     >
-      <div className="container mx-auto px-6 py-5 flex justify-between items-center">
-        
+      <div className="container mx-auto px-4 sm:px-6 py-4 sm:py-5 flex justify-between items-center">
         {/* Logo */}
         <div className="flex items-center gap-3">
           <div className="relative">
@@ -115,32 +115,32 @@ function Hero({ scrollToSection }) {
         {/* Grid overlay */}
         <div className="absolute inset-0 bg-grid-pattern opacity-10"></div>
       </div>
-      
+
       <div className="container mx-auto px-6 text-center relative z-10 pt-20">
         {/* Premium badge */}
         <div className="inline-flex items-center gap-2 bg-gradient-to-r from-cyan-500 to-blue-500 px-6 py-2 rounded-full mb-8 shadow-2xl shadow-cyan-500/50 border border-cyan-400/30">
           <Sparkles className="w-4 h-4 text-white animate-pulse" />
-          <span className="text-white text-sm font-bold tracking-wide">AI-POWERED INTELLIGENCE PLATFORM</span>
+          <span className="text-white text-xs sm:text-sm font-bold tracking-wide">AI-POWERED INTELLIGENCE PLATFORM</span>
           <Sparkles className="w-4 h-4 text-white animate-pulse" />
         </div>
-        
+
         {/* Main headline with gradient */}
-        <h2 className="text-5xl md:text-6xl font-black mb-6 leading-tight">
+        <h2 className="text-4xl sm:text-5xl md:text-6xl font-black mb-6 leading-tight">
           <span className="block text-white mb-2">Transform Data</span>
           <span className="block bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent animate-gradient">
             Into Dominance
           </span>
         </h2>
-        
+
         {/* Subtitle */}
-        <p className="text-lg md:text-xl mb-12 text-gray-300 max-w-3xl mx-auto leading-relaxed font-light">
-          Elite market intelligence that transforms complexity into clarity. 
+        <p className="text-base sm:text-lg md:text-xl mb-10 sm:mb-12 text-gray-300 max-w-3xl mx-auto px-2">
+          Elite market intelligence that transforms complexity into clarity.
           <span className="text-cyan-400 font-semibold"> Make decisions that matter.</span>
         </p>
-        
+
         {/* CTA Buttons */}
-        <div className="flex gap-6 justify-center mb-16">
-          <button 
+        <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center mb-12 sm:mb-16">
+          <button
             onClick={() => scrollToSection('services')}
             className="group relative bg-gradient-to-r from-cyan-500 to-blue-600 text-white px-8 py-4 rounded-2xl font-bold text-base hover:shadow-2xl hover:shadow-cyan-500/50 transition-all duration-300 flex items-center gap-3 overflow-hidden"
           >
@@ -148,7 +148,7 @@ function Hero({ scrollToSection }) {
             <ArrowRight className="w-5 h-5 relative z-10 group-hover:translate-x-2 transition-transform" />
             <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-purple-600 opacity-0 group-hover:opacity-100 transition-opacity"></div>
           </button>
-          <button 
+          <button
             onClick={() => scrollToSection('contact')}
             className="group bg-white bg-opacity-10 backdrop-blur-xl border-2 border-white border-opacity-30 hover:text-yellow-500 px-8 py-4 rounded-2xl font-bold text-base hover:bg-white hover:text-black transition-all duration-300 flex items-center gap-3"
           >
@@ -158,7 +158,7 @@ function Hero({ scrollToSection }) {
         </div>
 
         {/* Stats */}
-        <div className="grid grid-cols-3 gap-8 max-w-3xl mx-auto">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-8 max-w-3xl mx-auto">
           <div className="bg-white bg-opacity-5 backdrop-blur-xl border border-white border-opacity-10 rounded-2xl p-6">
             <div className="text-4xl font-black text-cyan-400 mb-2">10+</div>
             <div className="text-gray-400 text-sm font-semibold">Years Excellence</div>
@@ -205,7 +205,7 @@ function Services() {
 
   const handlePayment = (amount, description) => {
     if (!razorpayLoaded) {
-      alert('Payment system is loading, please try again in a moment.')
+      toast.info('Payment system is loading, please try again in a moment.')
       return
     }
 
@@ -213,10 +213,10 @@ function Services() {
       key: 'rzp_test_YOUR_API_KEY_ID',
       amount: amount,
       currency: 'INR',
-      name: 'Research Analyst Hub',
+      name: 'Katariya Research Analyst',
       description: description,
       handler: function (response) {
-        alert('Payment successful! Payment ID: ' + response.razorpay_payment_id)
+        toast.success('Payment successful! 🎉')
         setPaymentStatus('Payment successful! You will receive your purchase via email shortly.')
       },
       prefill: {
@@ -228,23 +228,25 @@ function Services() {
         color: '#06B6D4'
       },
       modal: {
-        ondismiss: function() {
+        ondismiss: function () {
           setPaymentStatus('Payment cancelled')
+          toast.warn('Payment cancelled')
         }
       }
     }
-    
+
     try {
       const rzp = new window.Razorpay(options)
       rzp.open()
     } catch (error) {
       console.error('Razorpay error:', error)
-      alert('Payment initialization failed. Please try again.')
+      toast.error('Payment failed. Please try again.')
     }
+
   }
 
   return (
-    <section id="services" className="relative py-32 bg-gradient-to-b from-black via-gray-900 to-black overflow-hidden">
+    <section id="services" className="relative py-20 sm:py-32  bg-gradient-to-b from-black via-gray-900 to-black overflow-hidden">
       {/* Background elements */}
       <div className="absolute inset-0">
         <div className="absolute top-0 left-0 w-96 h-96 bg-cyan-500 rounded-full filter blur-3xl opacity-10"></div>
@@ -265,89 +267,22 @@ function Services() {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-10 max-w-6xl mx-auto">
+        <div className="grid md:grid-cols-2 gap-10  mx-auto">
           {/* Market Research Card */}
-          <div className="group relative">
-            {/* Glow effect */}
-            <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-3xl blur-xl opacity-25 group-hover:opacity-50 transition-opacity"></div>
-            
-            <div className="relative bg-gradient-to-br from-gray-900 to-gray-800 p-10 rounded-3xl border border-gray-700 hover:border-cyan-500/50 transition-all duration-500 h-full">
-              {/* Badge */}
-              <div className="absolute -top-4 right-8 bg-gradient-to-r from-cyan-500 to-blue-600 text-white px-5 py-2 rounded-full text-xs font-bold shadow-xl">
-                BESTSELLER
-              </div>
-              
-              {/* Icon */}
-              <div className="relative mb-8">
-                <div className="absolute inset-0 bg-gradient-to-r from-cyan-400 to-blue-500 rounded-2xl blur-lg opacity-50"></div>
-                <div className="relative w-20 h-20 bg-gradient-to-br from-cyan-400 to-blue-600 rounded-2xl flex items-center justify-center shadow-2xl">
-                  <TrendingUp className="w-10 h-10 text-white" />
-                </div>
-              </div>
 
-              <h4 className="text-3xl font-black mb-4 text-white">Market Research</h4>
-              <p className="text-gray-400 mb-6 text-base leading-relaxed">
-                Deep-dive analysis into market dynamics, competitive landscapes, and emerging opportunities
-              </p>
-              
-              {/* Price */}
-              <div className="flex items-baseline mb-8">
-                <span className="text-5xl font-black bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">₹500</span>
-                <span className="text-gray-500 ml-3 text-base">/report</span>
-              </div>
-              
-              {/* Features */}
-              <ul className="space-y-4 mb-10">
-                <li className="flex items-start gap-4 text-gray-300">
-                  <div className="mt-1 w-6 h-6 bg-gradient-to-br from-cyan-400 to-blue-500 rounded-full flex items-center justify-center flex-shrink-0">
-                    <CheckCircle className="w-4 h-4 text-white" />
-                  </div>
-                  <span className="text-base">Comprehensive market analysis & insights</span>
-                </li>
-                <li className="flex items-start gap-4 text-gray-300">
-                  <div className="mt-1 w-6 h-6 bg-gradient-to-br from-cyan-400 to-blue-500 rounded-full flex items-center justify-center flex-shrink-0">
-                    <CheckCircle className="w-4 h-4 text-white" />
-                  </div>
-                  <span className="text-base">Predictive trend forecasting</span>
-                </li>
-                <li className="flex items-start gap-4 text-gray-300">
-                  <div className="mt-1 w-6 h-6 bg-gradient-to-br from-cyan-400 to-blue-500 rounded-full flex items-center justify-center flex-shrink-0">
-                    <CheckCircle className="w-4 h-4 text-white" />
-                  </div>
-                  <span className="text-base">Competitive intelligence mapping</span>
-                </li>
-                <li className="flex items-start gap-4 text-gray-300">
-                  <div className="mt-1 w-6 h-6 bg-gradient-to-br from-cyan-400 to-blue-500 rounded-full flex items-center justify-center flex-shrink-0">
-                    <CheckCircle className="w-4 h-4 text-white" />
-                  </div>
-                  <span className="text-base">Actionable strategic recommendations</span>
-                </li>
-              </ul>
-              
-              <button 
-                onClick={() => handlePayment(50000, 'Market Research Report')} 
-                className="group w-full bg-gradient-to-r from-cyan-500 to-blue-600 text-white px-8 py-4 rounded-2xl font-bold text-base hover:shadow-2xl hover:shadow-cyan-500/50 transition-all duration-300 disabled:opacity-50 flex items-center justify-center gap-3 relative overflow-hidden"
-                disabled={!razorpayLoaded}
-              >
-                <span className="relative z-10">{razorpayLoaded ? 'Get Premium Report' : 'Loading...'}</span>
-                <ArrowRight className="w-5 h-5 relative z-10 group-hover:translate-x-2 transition-transform" />
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-purple-600 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-              </button>
-            </div>
-          </div>
 
           {/* Consultation Card */}
           <div className="group relative">
             {/* Glow effect */}
             <div className="absolute -inset-1 bg-gradient-to-r from-purple-500 via-pink-500 to-cyan-500 rounded-3xl blur-xl opacity-25 group-hover:opacity-50 transition-opacity"></div>
-            
+
             <div className="relative bg-gradient-to-br from-purple-900 via-pink-900 to-purple-900 p-10 rounded-3xl border border-purple-500/50 hover:border-purple-400 transition-all duration-500 h-full">
               {/* Badge */}
               <div className="absolute -top-4 right-8 bg-gradient-to-r from-yellow-400 to-orange-500 text-black px-5 py-2 rounded-full text-xs font-bold shadow-xl flex items-center gap-1">
                 <Star className="w-3 h-3 fill-current" />
                 PREMIUM
               </div>
-              
+
               {/* Icon */}
               <div className="relative mb-8">
                 <div className="absolute inset-0 bg-gradient-to-r from-purple-400 to-pink-500 rounded-2xl blur-lg opacity-50"></div>
@@ -360,13 +295,13 @@ function Services() {
               <p className="text-purple-200 mb-6 text-lg leading-relaxed">
                 Exclusive 1-on-1 strategic guidance from industry veterans with proven track records
               </p>
-              
+
               {/* Price */}
               <div className="flex items-baseline mb-8">
                 <span className="text-6xl font-black bg-gradient-to-r from-purple-300 to-pink-400 bg-clip-text text-transparent">₹1000</span>
                 <span className="text-purple-300 ml-3 text-lg">/session</span>
               </div>
-              
+
               {/* Features */}
               <ul className="space-y-4 mb-10">
                 <li className="flex items-start gap-4 text-purple-100">
@@ -394,9 +329,9 @@ function Services() {
                   <span className="text-lg">Exclusive industry insights</span>
                 </li>
               </ul>
-              
-              <button 
-                onClick={() => handlePayment(100000, 'Consultation Session')} 
+
+              <button
+                onClick={() => handlePayment(100000, 'Consultation Session')}
                 className="group w-full bg-white text-purple-900 px-8 py-5 rounded-2xl font-bold text-lg hover:shadow-2xl hover:shadow-purple-500/50 transition-all duration-300 disabled:opacity-50 flex items-center justify-center gap-3"
                 disabled={!razorpayLoaded}
               >
@@ -439,11 +374,11 @@ function About() {
               <span className="block bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">Strategic Partner</span>
             </h3>
           </div>
-          
+
           <div className="relative">
             {/* Glow effect */}
             <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-3xl blur-2xl opacity-20"></div>
-            
+
             <div className="relative bg-gradient-to-br from-gray-900 to-gray-800 rounded-3xl p-12 border border-gray-700">
               <div className="flex items-center justify-center mb-10">
                 <div className="relative">
@@ -453,15 +388,15 @@ function About() {
                   </div>
                 </div>
               </div>
-              
+
               <p className="text-2xl text-white leading-relaxed mb-6 text-center font-light">
                 With over <span className="font-black text-transparent bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text">10 years</span> of elite experience in financial research and strategic market analysis, I specialize in transforming complex data ecosystems into clear, decisive actions.
               </p>
-              
+
               <p className="text-xl text-gray-400 leading-relaxed text-center mb-12 font-light">
                 From Fortune 500 companies to emerging disruptors, my insights have powered decisions worth billions. Let's unlock your competitive advantage together.
               </p>
-              
+
               <div className="grid md:grid-cols-4 gap-6">
                 <div className="relative group">
                   <div className="absolute -inset-0.5 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-2xl blur opacity-25 group-hover:opacity-50 transition"></div>
@@ -537,11 +472,11 @@ function Contact() {
               Something Extraordinary
             </p>
           </div>
-          
+
           <div className="relative">
             {/* Glow effect */}
             <div className="absolute -inset-1 bg-gradient-to-r from-purple-500 to-cyan-500 rounded-3xl blur-2xl opacity-20"></div>
-            
+
             <div className="relative bg-gradient-to-br from-gray-900 to-gray-800 rounded-3xl p-10 border border-gray-700">
               <div className="space-y-6">
                 <div className="relative">
@@ -574,7 +509,7 @@ function Contact() {
                     required
                   />
                 </div>
-                <button 
+                <button
                   onClick={handleSubmit}
                   className="group w-full bg-gradient-to-r from-purple-500 to-cyan-500 text-white px-8 py-5 rounded-2xl font-bold text-lg hover:shadow-2xl hover:shadow-purple-500/50 transition-all duration-300 flex items-center justify-center gap-3 relative overflow-hidden"
                 >
@@ -601,20 +536,20 @@ function Footer() {
       <div className="container mx-auto px-6">
         <div className="flex flex-col md:flex-row justify-between items-center">
           <div className="flex items-center gap-3 mb-6 md:mb-0">
-            <div className="relative">
-              <div className="absolute inset-0 bg-gradient-to-r from-cyan-400 to-blue-500 rounded-2xl blur-sm opacity-75"></div>
-              <div className="relative w-12 h-12 bg-gradient-to-br from-cyan-400 via-blue-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-xl">
-                <TrendingUp className="w-7 h-7 text-white" />
-              </div>
+             <div className="relative">
+            <div className="absolute inset-0 bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 rounded-2xl blur-sm opacity-75"></div>
+            <div className="relative w-40 h-12 bg-gradient-to-br rounded-2xl flex items-center justify-center shadow-xl">
+              <img
+                src="https://katariyaresearchanalyst.com/assets/img/kk.png"
+                alt="logo"
+                className="w-30"
+              />
             </div>
-            <div>
-              <span className="text-white font-black text-2xl tracking-tight">ResearchHub</span>
-              <p className="text-xs text-cyan-400 font-semibold">Premium Analytics</p>
-            </div>
+          </div>
           </div>
           <div className="text-center md:text-right">
             <p className="text-gray-500 mb-2">
-              &copy; 2025 Research Analyst Hub. All rights reserved.
+              &copy; 2026 Katariya Research Analyst Hub. All rights reserved.
             </p>
             <p className="text-xs text-gray-600">
               Empowering decisions through intelligence
@@ -643,452 +578,20 @@ function App() {
       <About />
       <Contact />
       <Footer />
+
+      {/* Toastify */}
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop
+        closeOnClick
+        pauseOnHover
+        draggable
+        theme="dark"
+      />
     </div>
   )
 }
 
-export default App
-
-// import { useState, useEffect } from 'react'
-// import { TrendingUp, BarChart3, Users, Mail, CheckCircle, ArrowRight, Sparkles } from 'lucide-react'
-
-// // Header Component
-// function Header({ scrollToSection }) {
-//   const [scrolled, setScrolled] = useState(false)
-
-//   useEffect(() => {
-//     const handleScroll = () => {
-//       setScrolled(window.scrollY > 20)
-//     }
-//     window.addEventListener('scroll', handleScroll)
-//     return () => window.removeEventListener('scroll', handleScroll)
-//   }, [])
-
-//   return (
-//     <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'bg-white shadow-lg' : 'bg-transparent'}`}>
-//       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-//         <div className="flex items-center gap-2">
-//           <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
-//             <TrendingUp className="w-6 h-6 text-white" />
-//           </div>
-//           <h1 className={`text-2xl font-bold ${scrolled ? 'text-gray-900' : 'text-white'}`}>
-//             ResearchHub
-//           </h1>
-//         </div>
-//         <nav className="flex gap-8">
-//           <button 
-//             onClick={() => scrollToSection('services')} 
-//             className={`font-medium transition-colors ${scrolled ? 'text-gray-700 hover:text-blue-600' : 'text-white hover:text-blue-200'}`}
-//           >
-//             Services
-//           </button>
-//           <button 
-//             onClick={() => scrollToSection('about')} 
-//             className={`font-medium transition-colors ${scrolled ? 'text-gray-700 hover:text-blue-600' : 'text-white hover:text-blue-200'}`}
-//           >
-//             About
-//           </button>
-//           <button 
-//             onClick={() => scrollToSection('contact')} 
-//             className={`font-medium transition-colors ${scrolled ? 'text-gray-700 hover:text-blue-600' : 'text-white hover:text-blue-200'}`}
-//           >
-//             Contact
-//           </button>
-//         </nav>
-//       </div>
-//     </header>
-//   )
-// }
-
-// // Hero Component
-// function Hero({ scrollToSection }) {
-//   return (
-//     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900">
-//       {/* Animated background elements */}
-//       <div className="absolute inset-0 overflow-hidden">
-//         <div className="absolute w-96 h-96 bg-blue-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse top-0 -left-20"></div>
-//         <div className="absolute w-96 h-96 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse bottom-0 -right-20 animation-delay-2000"></div>
-//         <div className="absolute w-96 h-96 bg-pink-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse top-1/2 left-1/2 animation-delay-4000"></div>
-//       </div>
-      
-//       <div className="container mx-auto px-4 text-center relative z-10">
-//         <div className="inline-flex items-center gap-2 bg-white bg-opacity-10 backdrop-blur-sm px-4 py-2 rounded-full mb-6 border border-white border-opacity-20">
-//           <Sparkles className="w-4 h-4 text-yellow-300" />
-//           <span className="text-white text-sm font-medium">AI-Powered Market Intelligence</span>
-//         </div>
-        
-//         <h2 className="text-6xl md:text-7xl font-bold mb-6 text-white leading-tight">
-//           Unlock Market
-//           <span className="block bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
-//             Insights
-//           </span>
-//         </h2>
-        
-//         <p className="text-xl md:text-2xl mb-10 text-gray-300 max-w-2xl mx-auto leading-relaxed">
-//           Transform data into decisions with expert research analysis and premium insights tailored for your success
-//         </p>
-        
-//         <div className="flex gap-4 justify-center">
-//           <button 
-//             onClick={() => scrollToSection('services')}
-//             className="group bg-white text-blue-900 px-8 py-4 rounded-full font-semibold hover:bg-blue-50 transition-all duration-300 shadow-lg hover:shadow-xl flex items-center gap-2"
-//           >
-//             Explore Services
-//             <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-//           </button>
-//           <button 
-//             onClick={() => scrollToSection('contact')}
-//             className="bg-transparent border-2 border-white text-white px-8 py-4 rounded-full font-semibold hover:bg-white hover:text-blue-900 transition-all duration-300"
-//           >
-//             Get Started
-//           </button>
-//         </div>
-//       </div>
-//     </section>
-//   )
-// }
-
-// // Services Component with Razorpay Integration
-// function Services() {
-//   const [paymentStatus, setPaymentStatus] = useState('')
-//   const [razorpayLoaded, setRazorpayLoaded] = useState(false)
-
-//   useEffect(() => {
-//     const script = document.createElement('script')
-//     script.src = 'https://checkout.razorpay.com/v1/checkout.js'
-//     script.async = true
-//     script.onload = () => setRazorpayLoaded(true)
-//     document.body.appendChild(script)
-
-//     return () => {
-//       if (document.body.contains(script)) {
-//         document.body.removeChild(script)
-//       }
-//     }
-//   }, [])
-
-//   const handlePayment = (amount, description) => {
-//     if (!razorpayLoaded) {
-//       alert('Payment system is loading, please try again in a moment.')
-//       return
-//     }
-
-//     const options = {
-//       key: 'rzp_test_YOUR_API_KEY_ID',
-//       amount: amount,
-//       currency: 'INR',
-//       name: 'Research Analyst Hub',
-//       description: description,
-//       handler: function (response) {
-//         alert('Payment successful! Payment ID: ' + response.razorpay_payment_id)
-//         setPaymentStatus('Payment successful! You will receive your purchase via email shortly.')
-//       },
-//       prefill: {
-//         name: 'User Name',
-//         email: 'user@example.com',
-//         contact: '9999999999'
-//       },
-//       theme: {
-//         color: '#3B82F6'
-//       },
-//       modal: {
-//         ondismiss: function() {
-//           setPaymentStatus('Payment cancelled')
-//         }
-//       }
-//     }
-    
-//     try {
-//       const rzp = new window.Razorpay(options)
-//       rzp.open()
-//     } catch (error) {
-//       console.error('Razorpay error:', error)
-//       alert('Payment initialization failed. Please try again.')
-//     }
-//   }
-
-//   return (
-//     <section id="services" className="py-24 bg-gradient-to-b from-gray-50 to-white">
-//       <div className="container mx-auto px-4">
-//         <div className="text-center mb-16">
-//           <div className="inline-flex items-center gap-2 bg-blue-100 px-4 py-2 rounded-full mb-4">
-//             <BarChart3 className="w-4 h-4 text-blue-600" />
-//             <span className="text-blue-600 text-sm font-semibold">OUR SERVICES</span>
-//           </div>
-//           <h3 className="text-5xl font-bold mb-4 text-gray-900">
-//             Premium Research Solutions
-//           </h3>
-//           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-//             Choose the perfect plan to elevate your market intelligence
-//           </p>
-//         </div>
-
-//         <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-//           {/* Market Research Card */}
-//           <div className="group relative bg-white p-8 rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-300 border border-gray-100 hover:border-blue-200 hover:-translate-y-2">
-//             <div className="absolute top-0 right-0 bg-gradient-to-br from-blue-500 to-blue-600 text-white px-4 py-1 rounded-bl-2xl rounded-tr-3xl text-sm font-semibold">
-//               Popular
-//             </div>
-//             <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mb-6">
-//               <TrendingUp className="w-8 h-8 text-white" />
-//             </div>
-//             <h4 className="text-3xl font-bold mb-3 text-gray-900">Market Research Report</h4>
-//             <p className="text-gray-600 mb-6 leading-relaxed">
-//               Comprehensive analysis on market trends, forecasts, and actionable insights to stay ahead of the competition
-//             </p>
-//             <div className="flex items-baseline mb-6">
-//               <span className="text-5xl font-bold text-gray-900">₹500</span>
-//               <span className="text-gray-500 ml-2">/report</span>
-//             </div>
-//             <ul className="space-y-3 mb-8">
-//               <li className="flex items-center gap-3 text-gray-700">
-//                 <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
-//                 In-depth market analysis
-//               </li>
-//               <li className="flex items-center gap-3 text-gray-700">
-//                 <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
-//                 Industry trends & forecasts
-//               </li>
-//               <li className="flex items-center gap-3 text-gray-700">
-//                 <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
-//                 Competitive landscape overview
-//               </li>
-//             </ul>
-//             <button 
-//               onClick={() => handlePayment(50000, 'Market Research Report')} 
-//               className="w-full bg-gradient-to-r from-blue-600 to-blue-700 text-white px-6 py-4 rounded-xl font-semibold hover:from-blue-700 hover:to-blue-800 transition-all duration-300 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-//               disabled={!razorpayLoaded}
-//             >
-//               {razorpayLoaded ? (
-//                 <>
-//                   Buy Now
-//                   <ArrowRight className="w-5 h-5" />
-//                 </>
-//               ) : 'Loading...'}
-//             </button>
-//           </div>
-
-//           {/* Consultation Card */}
-//           <div className="group relative bg-gradient-to-br from-purple-600 to-blue-600 p-8 rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 text-white">
-//             <div className="w-16 h-16 bg-white bg-opacity-20 backdrop-blur-sm rounded-2xl flex items-center justify-center mb-6">
-//               <Users className="w-8 h-8 text-white" />
-//             </div>
-//             <h4 className="text-3xl font-bold mb-3">Consultation Session</h4>
-//             <p className="text-blue-100 mb-6 leading-relaxed">
-//               Personalized 1-on-1 expert guidance tailored to your specific business needs and challenges
-//             </p>
-//             <div className="flex items-baseline mb-6">
-//               <span className="text-5xl font-bold">₹1000</span>
-//               <span className="text-blue-200 ml-2">/session</span>
-//             </div>
-//             <ul className="space-y-3 mb-8">
-//               <li className="flex items-center gap-3">
-//                 <CheckCircle className="w-5 h-5 text-green-300 flex-shrink-0" />
-//                 60-minute private session
-//               </li>
-//               <li className="flex items-center gap-3">
-//                 <CheckCircle className="w-5 h-5 text-green-300 flex-shrink-0" />
-//                 Personalized strategy roadmap
-//               </li>
-//               <li className="flex items-center gap-3">
-//                 <CheckCircle className="w-5 h-5 text-green-300 flex-shrink-0" />
-//                 Follow-up support included
-//               </li>
-//             </ul>
-//             <button 
-//               onClick={() => handlePayment(100000, 'Consultation Session')} 
-//               className="w-full bg-white text-purple-600 px-6 py-4 rounded-xl font-semibold hover:bg-gray-50 transition-all duration-300 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-//               disabled={!razorpayLoaded}
-//             >
-//               {razorpayLoaded ? (
-//                 <>
-//                   Book Now
-//                   <ArrowRight className="w-5 h-5" />
-//                 </>
-//               ) : 'Loading...'}
-//             </button>
-//           </div>
-//         </div>
-
-//         {paymentStatus && (
-//           <div className={`mt-8 p-4 rounded-xl text-center font-semibold ${paymentStatus.includes('successful') ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
-//             {paymentStatus}
-//           </div>
-//         )}
-//       </div>
-//     </section>
-//   )
-// }
-
-// // About Component
-// function About() {
-//   return (
-//     <section id="about" className="py-24 bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50">
-//       <div className="container mx-auto px-4">
-//         <div className="max-w-4xl mx-auto">
-//           <div className="text-center mb-12">
-//             <div className="inline-flex items-center gap-2 bg-purple-100 px-4 py-2 rounded-full mb-4">
-//               <Users className="w-4 h-4 text-purple-600" />
-//               <span className="text-purple-600 text-sm font-semibold">ABOUT US</span>
-//             </div>
-//             <h3 className="text-5xl font-bold mb-6 text-gray-900">
-//               Meet Your Analyst
-//             </h3>
-//           </div>
-          
-//           <div className="bg-white rounded-3xl shadow-xl p-12">
-//             <div className="flex items-center justify-center mb-8">
-//               <div className="w-32 h-32 bg-gradient-to-br from-blue-600 to-purple-600 rounded-full flex items-center justify-center text-white text-5xl font-bold">
-//                 RA
-//               </div>
-//             </div>
-            
-//             <p className="text-xl text-gray-700 leading-relaxed mb-6 text-center">
-//               With over <span className="font-bold text-blue-600">10 years of experience</span> in financial research and market analysis, I specialize in transforming complex data into clear, actionable insights.
-//             </p>
-            
-//             <p className="text-lg text-gray-600 leading-relaxed text-center mb-8">
-//               My expertise spans market trends analysis, risk assessment, and strategic planning, helping businesses and investors make informed decisions in an ever-changing market landscape.
-//             </p>
-            
-//             <div className="grid md:grid-cols-3 gap-6">
-//               <div className="text-center p-6 bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl">
-//                 <div className="text-4xl font-bold text-blue-600 mb-2">10+</div>
-//                 <div className="text-gray-700 font-medium">Years Experience</div>
-//               </div>
-//               <div className="text-center p-6 bg-gradient-to-br from-purple-50 to-purple-100 rounded-2xl">
-//                 <div className="text-4xl font-bold text-purple-600 mb-2">500+</div>
-//                 <div className="text-gray-700 font-medium">Reports Delivered</div>
-//               </div>
-//               <div className="text-center p-6 bg-gradient-to-br from-pink-50 to-pink-100 rounded-2xl">
-//                 <div className="text-4xl font-bold text-pink-600 mb-2">98%</div>
-//                 <div className="text-gray-700 font-medium">Client Satisfaction</div>
-//               </div>
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-//     </section>
-//   )
-// }
-
-// // Contact Component
-// function Contact() {
-//   const [formData, setFormData] = useState({ name: '', email: '', message: '' })
-//   const [submitStatus, setSubmitStatus] = useState('')
-
-//   const handleSubmit = (e) => {
-//     e.preventDefault()
-//     setSubmitStatus('Message sent successfully!')
-//     setFormData({ name: '', email: '', message: '' })
-//     setTimeout(() => setSubmitStatus(''), 3000)
-//   }
-
-//   return (
-//     <section id="contact" className="py-24 bg-gradient-to-b from-gray-900 to-blue-900 text-white">
-//       <div className="container mx-auto px-4">
-//         <div className="max-w-2xl mx-auto">
-//           <div className="text-center mb-12">
-//             <div className="inline-flex items-center gap-2 bg-white bg-opacity-10 backdrop-blur-sm px-4 py-2 rounded-full mb-4 border border-white border-opacity-20">
-//               <Mail className="w-4 h-4 text-blue-300" />
-//               <span className="text-blue-300 text-sm font-semibold">GET IN TOUCH</span>
-//             </div>
-//             <h3 className="text-5xl font-bold mb-6">Let's Connect</h3>
-//             <p className="text-xl text-gray-300">
-//               Have questions? We're here to help you succeed
-//             </p>
-//           </div>
-          
-//           <div className="bg-white bg-opacity-10 backdrop-blur-lg rounded-3xl p-8 shadow-2xl border border-white border-opacity-20">
-//             <div className="space-y-6">
-//               <div>
-//                 <input
-//                   type="text"
-//                   placeholder="Your Name"
-//                   value={formData.name}
-//                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-//                   className="w-full p-4 bg-white bg-opacity-10 backdrop-blur-sm border border-white border-opacity-20 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400 text-white placeholder-gray-400"
-//                   required
-//                 />
-//               </div>
-//               <div>
-//                 <input
-//                   type="email"
-//                   placeholder="Your Email"
-//                   value={formData.email}
-//                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-//                   className="w-full p-4 bg-white bg-opacity-10 backdrop-blur-sm border border-white border-opacity-20 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400 text-white placeholder-gray-400"
-//                   required
-//                 />
-//               </div>
-//               <div>
-//                 <textarea
-//                   placeholder="Your Message"
-//                   value={formData.message}
-//                   onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-//                   className="w-full p-4 bg-white bg-opacity-10 backdrop-blur-sm border border-white border-opacity-20 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400 text-white placeholder-gray-400"
-//                   rows="5"
-//                   required
-//                 />
-//               </div>
-//               <button 
-//                 onClick={handleSubmit}
-//                 className="w-full bg-white text-blue-900 px-6 py-4 rounded-xl font-semibold hover:bg-blue-50 transition-all duration-300 shadow-lg hover:shadow-xl flex items-center justify-center gap-2"
-//               >
-//                 Send Message
-//                 <ArrowRight className="w-5 h-5" />
-//               </button>
-//               {submitStatus && (
-//                 <p className="text-green-300 text-center font-semibold">{submitStatus}</p>
-//               )}
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-//     </section>
-//   )
-// }
-
-// // Footer Component
-// function Footer() {
-//   return (
-//     <footer className="bg-gray-900 text-gray-400 py-12 border-t border-gray-800">
-//       <div className="container mx-auto px-4">
-//         <div className="flex flex-col md:flex-row justify-between items-center">
-//           <div className="flex items-center gap-2 mb-4 md:mb-0">
-//             <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
-//               <TrendingUp className="w-6 h-6 text-white" />
-//             </div>
-//             <span className="text-white font-bold text-xl">ResearchHub</span>
-//           </div>
-//           <p className="text-center md:text-right">
-//             &copy; 2025 Research Analyst Hub. All rights reserved.
-//           </p>
-//         </div>
-//       </div>
-//     </footer>
-//   )
-// }
-
-// // Main App Component
-// function App() {
-//   const scrollToSection = (sectionId) => {
-//     const element = document.getElementById(sectionId)
-//     if (element) {
-//       element.scrollIntoView({ behavior: 'smooth' })
-//     }
-//   }
-
-//   return (
-//     <div className="min-h-screen bg-white">
-//       <Header scrollToSection={scrollToSection} />
-//       <Hero scrollToSection={scrollToSection} />
-//       <Services />
-//       <About />
-//       <Contact />
-//       <Footer />
-//     </div>
-//   )
-// }
-
-// export default App
+export default App  ;
