@@ -42,7 +42,7 @@ function Header({ scrollToSection }) {
         </div>
 
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex gap-10">
+        {/* <nav className="hidden md:flex gap-10">
           {['services', 'about', 'contact'].map((item) => (
             <button
               key={item}
@@ -56,10 +56,9 @@ function Header({ scrollToSection }) {
               {item.charAt(0).toUpperCase() + item.slice(1)}
             </button>
           ))}
-        </nav>
-
+        </nav> */}
         {/* Hamburger Button (sm only) */}
-        <button
+        {/* <button
           onClick={() => setMenuOpen(!menuOpen)}
           className="md:hidden relative w-10 h-10 flex flex-col justify-center items-center gap-1"
         >
@@ -75,10 +74,10 @@ function Header({ scrollToSection }) {
             className={`h-0.5 w-6 bg-white transition-transform duration-300
               ${menuOpen ? '-rotate-45 -translate-y-1.5' : ''}`}
           />
-        </button>
+        </button> */}
       </div>
 
-      {/* Mobile Menu */}
+      {/* Mobile Menu
       <div
         className={`md:hidden overflow-hidden transition-all duration-500
         ${menuOpen ? 'max-h-64 opacity-100' : 'max-h-0 opacity-0'}`}
@@ -94,7 +93,7 @@ function Header({ scrollToSection }) {
             </button>
           ))}
         </div>
-      </div>
+      </div> */}
     </header>
   )
 }
@@ -706,10 +705,10 @@ function App() {
   return (
     <div className="min-h-screen bg-black">
       <Header scrollToSection={scrollToSection} />
-      <Hero scrollToSection={scrollToSection} />
+      {/* <Hero scrollToSection={scrollToSection} /> */}
       <Services />
-      <About />
-      <Contact />
+      {/* <About /> */}
+      {/* <Contact /> */}
       <Footer />
 
       {/* Toastify */}
