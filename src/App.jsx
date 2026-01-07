@@ -292,7 +292,7 @@ function Services() {
 
               <h4 className="text-3xl sm:text-4xl font-black mb-4 text-white">PREMIUM SERVICE CHARGES</h4>
               <p className="text-purple-200 mb-6 text-base sm:text-lg leading-relaxed">
-                Exclusive 1-on-1 strategic guidance from industry veterans with proven track records
+                𝐎𝐧𝐞 𝐭𝐢𝐦𝐞 𝐣𝐨𝐢𝐧 𝐀𝐧𝐝 𝐰𝐚𝐭𝐜𝐡 𝐨𝐮𝐫 𝐀𝐜𝐜𝐮𝐫𝐚𝐜𝐲 ✅🚀✨💫💸
               </p>
 
               {/* Price */}
@@ -668,16 +668,16 @@ function Footer() {
       <div className="container mx-auto px-6">
         <div className="flex flex-col md:flex-row justify-between items-center">
           <div className="flex items-center gap-3 mb-6 md:mb-0">
-             <div className="relative">
-            <div className="absolute inset-0 bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 rounded-2xl blur-sm opacity-75"></div>
-            <div className="relative w-40 h-12 bg-gradient-to-br rounded-2xl flex items-center justify-center shadow-xl">
-              <img
-                src="https://katariyaresearchanalyst.com/assets/img/kk.png"
-                alt="logo"
-                className="w-30"
-              />
+            <div className="relative">
+              <div className="absolute inset-0 bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 rounded-2xl blur-sm opacity-75"></div>
+              <div className="relative w-40 h-12 bg-gradient-to-br rounded-2xl flex items-center justify-center shadow-xl">
+                <img
+                  src="https://katariyaresearchanalyst.com/assets/img/kk.png"
+                  alt="logo"
+                  className="w-30"
+                />
+              </div>
             </div>
-          </div>
           </div>
           <div className="text-center md:text-right">
             <p className="text-gray-500 mb-2">
@@ -726,4 +726,4 @@ function App() {
   )
 }
 
-export default App  ;
+export default App;
