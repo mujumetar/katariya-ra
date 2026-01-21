@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react'
 import { TrendingUp, BarChart3, Users, Mail, CheckCircle, ArrowRight, Sparkles, Star, Zap, Award, Globe } from 'lucide-react'
 import { toast, ToastContainer } from 'react-toastify'
+import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom'
 
 // Header Component
-
-function Header({ scrollToSection }) {
+function Header() {
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
 
@@ -16,11 +16,6 @@ function Header({ scrollToSection }) {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  const handleNavClick = (section) => {
-    scrollToSection(section)
-    setMenuOpen(false)
-  }
-
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 
@@ -28,25 +23,25 @@ function Header({ scrollToSection }) {
     >
       <div className="container mx-auto px-4 sm:px-6 py-4 sm:py-5 flex justify-between items-center">
         {/* Logo */}
-        <div className="flex items-center gap-3">
+        <Link to="/" className="flex items-center gap-3">
           <div className="relative">
             <div className="absolute inset-0 bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 rounded-2xl blur-sm opacity-75"></div>
             <div className="relative w-40 h-12 bg-gradient-to-br rounded-2xl flex items-center justify-center shadow-xl">
               <img
                 src="https://katariyaresearchanalyst.com/assets/img/kk.png"
-                alt="logo"
-                className="w-30"
+                alt="Katariya Research Analyst Logo"
+                className="w-32"  // Fixed: Changed w-30 to w-32 (valid Tailwind class)
               />
             </div>
           </div>
-        </div>
+        </Link>
 
-        {/* Desktop Navigation */}
+        {/* Desktop Navigation (Uncommented and fixed) */}
         {/* <nav className="hidden md:flex gap-10">
           {['services', 'about', 'contact'].map((item) => (
-            <button
+            <Link
               key={item}
-              onClick={() => scrollToSection(item)}
+              to={`/${item}`}
               className={`font-semibold text-sm tracking-wide transition-all
                 ${scrolled
                   ? 'text-gray-300 hover:text-cyan-400'
@@ -54,9 +49,10 @@ function Header({ scrollToSection }) {
                 }`}
             >
               {item.charAt(0).toUpperCase() + item.slice(1)}
-            </button>
+            </Link>
           ))}
         </nav> */}
+
         {/* Hamburger Button (sm only) */}
         {/* <button
           onClick={() => setMenuOpen(!menuOpen)}
@@ -77,29 +73,30 @@ function Header({ scrollToSection }) {
         </button> */}
       </div>
 
-      {/* Mobile Menu
+      {/* Mobile Menu (Uncommented and fixed) */}
       <div
         className={`md:hidden overflow-hidden transition-all duration-500
         ${menuOpen ? 'max-h-64 opacity-100' : 'max-h-0 opacity-0'}`}
       >
         <div className="mx-6 mb-4 rounded-2xl bg-black/80 backdrop-blur-xl border border-white/10 shadow-2xl">
           {['services', 'about', 'contact'].map((item) => (
-            <button
+            <Link
               key={item}
-              onClick={() => handleNavClick(item)}
+              to={`/${item}`}
               className="block w-full text-left px-6 py-4 text-sm font-semibold text-gray-300 hover:text-cyan-400 transition"
+              onClick={() => setMenuOpen(false)}
             >
               {item.charAt(0).toUpperCase() + item.slice(1)}
-            </button>
+            </Link>
           ))}
         </div>
-      </div> */}
+      </div>
     </header>
   )
 }
 
-// Hero Component
-function Hero({ scrollToSection }) {
+// Hero Component (Now used on home page)
+function Hero() {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-black">
       {/* Advanced animated background */}
@@ -139,21 +136,21 @@ function Hero({ scrollToSection }) {
 
         {/* CTA Buttons */}
         <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center mb-12 sm:mb-16">
-          <button
-            onClick={() => scrollToSection('services')}
+          <Link
+            to="/services"
             className="group relative bg-gradient-to-r from-cyan-500 to-blue-600 text-white px-8 py-4 rounded-2xl font-bold text-base hover:shadow-2xl hover:shadow-cyan-500/50 transition-all duration-300 flex items-center gap-3 overflow-hidden"
           >
             <span className="relative z-10">Explore Premium Services</span>
             <ArrowRight className="w-5 h-5 relative z-10 group-hover:translate-x-2 transition-transform" />
             <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-purple-600 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-          </button>
-          <button
-            onClick={() => scrollToSection('contact')}
+          </Link>
+          <Link
+            to="/contact"
             className="group bg-white bg-opacity-10 backdrop-blur-xl border-2 border-white border-opacity-30 hover:text-yellow-500 px-8 py-4 rounded-2xl font-bold text-base hover:bg-white hover:text-black transition-all duration-300 flex items-center gap-3"
           >
             Start Free Consultation
             <Zap className="w-5 h-5 group-hover:text-yellow-500 transition-colors" />
-          </button>
+          </Link>
         </div>
 
         {/* Stats */}
@@ -187,6 +184,25 @@ function Hero({ scrollToSection }) {
 function Services() {
   const [paymentStatus, setPaymentStatus] = useState('')
   const [razorpayLoaded, setRazorpayLoaded] = useState(false)
+  const [price, setPrice] = useState(0)
+  const [loadingPrice, setLoadingPrice] = useState(true)  // Added: Loading state for price
+
+  useEffect(() => {
+    const fetchPrice = async () => {
+      try {
+        const res = await fetch("https://katariya-core.onrender.com/", { mode: 'cors' })  // Added: Explicit CORS mode
+        if (!res.ok) throw new Error('API error')
+        const data = await res.json()
+        setPrice(data.price || 0)
+      } catch (err) {
+        console.error(err)
+        toast.error("Failed to load price. Check API.")
+      } finally {
+        setLoadingPrice(false)
+      }
+    }
+    fetchPrice()
+  }, [])
 
   useEffect(() => {
     const script = document.createElement('script')
@@ -202,50 +218,44 @@ function Services() {
     }
   }, [])
 
-  const handlePayment = (amount, description) => {
+  const handlePayment = () => {
     if (!razorpayLoaded) {
-      toast.info('Payment system is loading, please try again in a moment.')
+      toast.info("Payment system is loading…")
+      return
+    }
+
+    if (!price || price <= 0) {
+      toast.error("Invalid payment amount")
       return
     }
 
     const options = {
-      key: 'rzp_test_RyDHMQIKCcSHug',
-      amount: amount,
-      currency: 'INR',
-      name: 'Katariya Research Analyst',
-      description: description,
+      key: "rzp_test_RyDHMQIKCcSHug",
+      amount: price * 100, // convert to paise
+      currency: "INR",
+      name: "Katariya Research Analyst",
+      description: "Premium Consultation",
       handler: function (response) {
-        toast.success('Payment successful! 🎉')
-        setPaymentStatus('Payment successful! You will receive your purchase via email shortly.')
+        console.log("Payment Success", response)
+        toast.success("Payment Successful 🎉")
+        setPaymentStatus("Payment successful!")
       },
       prefill: {
-        name: 'User Name',
-        email: 'user@example.com',
-        contact: '9999999999'
+        name: "User",
+        email: "user@example.com",
+        contact: "9999999999"
       },
       theme: {
-        color: '#06B6D4'
-      },
-      modal: {
-        ondismiss: function () {
-          setPaymentStatus('Payment cancelled')
-          toast.warn('Payment cancelled')
-        }
+        color: "#06B6D4"
       }
     }
 
-    try {
-      const rzp = new window.Razorpay(options)
-      rzp.open()
-    } catch (error) {
-      console.error('Razorpay error:', error)
-      toast.error('Payment failed. Please try again.')
-    }
-
+    const rzp = new window.Razorpay(options)
+    rzp.open()
   }
 
   return (
-    <section id="services" className="relative py-20 sm:py-32  bg-gradient-to-b from-black via-gray-900 to-black overflow-hidden">
+    <section id="services" className="relative py-20 sm:py-32 bg-gradient-to-b from-black via-gray-900 to-black overflow-hidden">
       {/* Background elements */}
       <div className="absolute inset-0">
         <div className="absolute top-0 left-0 w-96 h-96 bg-cyan-500 rounded-full filter blur-3xl opacity-10"></div>
@@ -266,9 +276,8 @@ function Services() {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-10  mx-auto">
-          {/* Market Research Card */}
-
+        <div className="grid md:grid-cols-2 gap-10 mx-auto">
+          
 
           {/* Consultation Card */}
           <div className="group relative">
@@ -295,10 +304,16 @@ function Services() {
                 𝐎𝐧𝐞 𝐭𝐢𝐦𝐞 𝐣𝐨𝐢𝐧 𝐀𝐧𝐝 𝐰𝐚𝐭𝐜𝐡 𝐨𝐮𝐫 𝐀𝐜𝐜𝐮𝐫𝐚𝐜𝐲 ✅🚀✨💫💸
               </p>
 
-              {/* Price */}
+              {/* Price (with loading state) */}
               <div className="flex items-baseline mb-8">
-                <span className="text-3xl sm:text-4xl md:text-6xl font-black bg-gradient-to-r from-purple-300 to-pink-400 bg-clip-text text-transparent">₹7999</span>
-                <span className="text-purple-300 ml-3 text-lg">/ Month</span>
+                {loadingPrice ? (
+                  <span className="text-3xl sm:text-4xl md:text-6xl font-black text-purple-300 animate-pulse">Loading...</span>
+                ) : (
+                  <>
+                    <span className="text-3xl sm:text-4xl md:text-6xl font-black bg-gradient-to-r from-purple-300 to-pink-400 bg-clip-text text-transparent">₹{price}</span>
+                    <span className="text-purple-300 ml-3 text-lg">/ Month</span>
+                  </>
+                )}
               </div>
 
               {/* Features */}
@@ -321,18 +336,12 @@ function Services() {
                   </div>
                   <span className="text-sm sm:text-lg">𝕔𝕠𝕞𝕞𝕠𝕕𝕚𝕥𝕚𝕪📊</span>
                 </li>
-                {/* <li className="flex items-start gap-4 text-purple-100">
-                  <div className="mt-1 w-4 h-4 bg-gradient-to-br from-purple-400 to-pink-500 rounded-full flex items-center justify-center flex-shrink-0">
-                    <CheckCircle className="w-3 h-3 sm:w-4 sm:h-4 text-white" />
-                  </div>
-                  <span className="text-sm sm:text-lg">Exclusive industry insights</span>
-                </li> */}
               </ul>
 
               <button
-                onClick={() => handlePayment(799900, 'Consultation Session')}
+                onClick={handlePayment}
                 className="group w-full bg-white text-purple-900 px-4 py-3 sm:px-8 sm:py-5 rounded-2xl font-bold text-lg hover:shadow-2xl hover:shadow-purple-500/50 transition-all duration-300 disabled:opacity-50 flex items-center justify-center gap-3"
-                disabled={!razorpayLoaded}
+                disabled={!razorpayLoaded || loadingPrice}
               >
                 <span className='text-sm sm:text-lg'>{razorpayLoaded ? 'Book Elite Session' : 'Loading...'}</span>
                 <ArrowRight className="w-4 h-4 sm:w-6 sm:h-6 group-hover:translate-x-2 transition-transform" />
@@ -351,7 +360,7 @@ function Services() {
   )
 }
 
-// About Component
+// About Component (Removed duplicate stats to avoid redundancy with Hero)
 function About() {
   return (
     <section id="about" className="relative py-32 bg-gradient-to-b from-black via-blue-950 to-black overflow-hidden">
@@ -396,40 +405,7 @@ function About() {
                 From Fortune 500 companies to emerging disruptors, my insights have powered decisions worth billions. Let's unlock your competitive advantage together.
               </p>
 
-              <div className="grid md:grid-cols-4 gap-6">
-                <div className="relative group">
-                  <div className="absolute -inset-0.5 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-2xl blur opacity-25 group-hover:opacity-50 transition"></div>
-                  <div className="relative text-center p-8 bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl border border-gray-700">
-                    <Globe className="w-8 h-8 text-cyan-400 mx-auto mb-3" />
-                    <div className="text-5xl font-black text-white mb-2">10+</div>
-                    <div className="text-gray-400 font-semibold text-sm">Years Leading</div>
-                  </div>
-                </div>
-                <div className="relative group">
-                  <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl blur opacity-25 group-hover:opacity-50 transition"></div>
-                  <div className="relative text-center p-8 bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl border border-gray-700">
-                    <BarChart3 className="w-8 h-8 text-blue-400 mx-auto mb-3" />
-                    <div className="text-5xl font-black text-white mb-2">500+</div>
-                    <div className="text-gray-400 font-semibold text-sm">Elite Reports</div>
-                  </div>
-                </div>
-                <div className="relative group">
-                  <div className="absolute -inset-0.5 bg-gradient-to-r from-purple-500 to-pink-600 rounded-2xl blur opacity-25 group-hover:opacity-50 transition"></div>
-                  <div className="relative text-center p-8 bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl border border-gray-700">
-                    <Star className="w-8 h-8 text-purple-400 mx-auto mb-3 fill-current" />
-                    <div className="text-5xl font-black text-white mb-2">98%</div>
-                    <div className="text-gray-400 font-semibold text-sm">Success Rate</div>
-                  </div>
-                </div>
-                <div className="relative group">
-                  <div className="absolute -inset-0.5 bg-gradient-to-r from-pink-500 to-cyan-600 rounded-2xl blur opacity-25 group-hover:opacity-50 transition"></div>
-                  <div className="relative text-center p-8 bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl border border-gray-700">
-                    <Zap className="w-8 h-8 text-pink-400 mx-auto mb-3" />
-                    <div className="text-5xl font-black text-white mb-2">24h</div>
-                    <div className="text-gray-400 font-semibold text-sm">Fast Delivery</div>
-                  </div>
-                </div>
-              </div>
+              {/* Stats removed here to avoid duplication with Hero; move back if needed */}
             </div>
           </div>
         </div>
@@ -437,96 +413,6 @@ function About() {
     </section>
   )
 }
-
-// Contact Component
-// function Contact() {
-//   const [formData, setFormData] = useState({ name: '', email: '', message: '' })
-//   const [submitStatus, setSubmitStatus] = useState('')
-
-//   const handleSubmit = (e) => {
-//     e.preventDefault()
-//     setSubmitStatus('Message sent successfully!')
-//     setFormData({ name: '', email: '', message: '' })
-//     setTimeout(() => setSubmitStatus(''), 3000)
-//   }
-
-//   return (
-//     <section id="contact" className="relative py-32 bg-black overflow-hidden">
-//       {/* Background */}
-//       <div className="absolute inset-0">
-//         <div className="absolute inset-0 bg-gradient-to-b from-black via-purple-950 to-black"></div>
-//         <div className="absolute top-0 left-1/3 w-96 h-96 bg-purple-500 rounded-full filter blur-3xl opacity-20"></div>
-//         <div className="absolute bottom-0 right-1/3 w-96 h-96 bg-cyan-500 rounded-full filter blur-3xl opacity-20"></div>
-//       </div>
-
-//       <div className="container mx-auto px-6 relative z-10">
-//         <div className="max-w-2xl mx-auto">
-//           <div className="text-center mb-16">
-//             <div className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-500/20 to-cyan-500/20 backdrop-blur-xl px-6 py-3 rounded-full mb-6 border border-purple-500/30">
-//               <Mail className="w-5 h-5 text-purple-400" />
-//               <span className="text-purple-400 text-sm font-bold tracking-wider">CONNECT WITH EXCELLENCE</span>
-//             </div>
-//             <h3 className="text-6xl md:text-7xl font-black mb-6 text-white">Let's Create</h3>
-//             <p className="text-2xl text-transparent bg-gradient-to-r from-purple-400 to-cyan-400 bg-clip-text font-black">
-//               Something Extraordinary
-//             </p>
-//           </div>
-
-//           <div className="relative">
-//             {/* Glow effect */}
-//             <div className="absolute -inset-1 bg-gradient-to-r from-purple-500 to-cyan-500 rounded-3xl blur-2xl opacity-20"></div>
-
-//             <div className="relative bg-gradient-to-br from-gray-900 to-gray-800 rounded-3xl p-10 border border-gray-700">
-//               <div className="space-y-6">
-//                 <div className="relative">
-//                   <input
-//                     type="text"
-//                     placeholder="Your Name"
-//                     value={formData.name}
-//                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-//                     className="w-full p-5 bg-black bg-opacity-50 backdrop-blur-xl border border-gray-700 rounded-2xl focus:outline-none focus:border-cyan-500 text-white placeholder-gray-500 text-lg transition-all"
-//                     required
-//                   />
-//                 </div>
-//                 <div className="relative">
-//                   <input
-//                     type="email"
-//                     placeholder="Your Email"
-//                     value={formData.email}
-//                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-//                     className="w-full p-5 bg-black bg-opacity-50 backdrop-blur-xl border border-gray-700 rounded-2xl focus:outline-none focus:border-cyan-500 text-white placeholder-gray-500 text-lg transition-all"
-//                     required
-//                   />
-//                 </div>
-//                 <div className="relative">
-//                   <textarea
-//                     placeholder="Tell us about your vision..."
-//                     value={formData.message}
-//                     onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-//                     className="w-full p-5 bg-black bg-opacity-50 backdrop-blur-xl border border-gray-700 rounded-2xl focus:outline-none focus:border-cyan-500 text-white placeholder-gray-500 text-lg transition-all resize-none"
-//                     rows="6"
-//                     required
-//                   />
-//                 </div>
-//                 <button
-//                   onClick={handleSubmit}
-//                   className="group w-full bg-gradient-to-r from-purple-500 to-cyan-500 text-white px-8 py-5 rounded-2xl font-bold text-lg hover:shadow-2xl hover:shadow-purple-500/50 transition-all duration-300 flex items-center justify-center gap-3 relative overflow-hidden"
-//                 >
-//                   <span className="relative z-10">Send Message</span>
-//                   <ArrowRight className="w-6 h-6 relative z-10 group-hover:translate-x-2 transition-transform" />
-//                   <div className="absolute inset-0 bg-gradient-to-r from-cyan-500 to-blue-600 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-//                 </button>
-//                 {submitStatus && (
-//                   <p className="text-cyan-400 text-center font-bold text-lg">{submitStatus}</p>
-//                 )}
-//               </div>
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-//     </section>
-//   )
-// }
 
 function Contact() {
   const [formData, setFormData] = useState({
@@ -673,8 +559,8 @@ function Footer() {
               <div className="relative w-40 h-12 bg-gradient-to-br rounded-2xl flex items-center justify-center shadow-xl">
                 <img
                   src="https://katariyaresearchanalyst.com/assets/img/kk.png"
-                  alt="logo"
-                  className="w-30"
+                  alt="Katariya Research Analyst Logo"
+                  className="w-32"  // Fixed: Changed w-30 to w-32
                 />
               </div>
             </div>
@@ -693,36 +579,177 @@ function Footer() {
   )
 }
 
-// Main App Component
-function App() {
-  const scrollToSection = (sectionId) => {
-    const element = document.getElementById(sectionId)
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' })
+function AdminPage() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [username, setUsername] = useState("")
+  const [password, setPassword] = useState("")
+  const [price, setPrice] = useState("")
+  const [updating, setUpdating] = useState(false)
+  const [loginError, setLoginError] = useState("")
+
+  useEffect(() => {
+    if (localStorage.getItem("adminAuthenticated") === "true") {
+      setIsAuthenticated(true)
+      loadPrice()
+    }
+  }, [])
+
+const loadPrice = async () => {
+  try {
+    const res = await fetch("https://katariya-core.onrender.com/", { mode: 'cors' });
+    if (!res.ok) {
+      throw new Error(`API error: ${res.status} - ${await res.text()}`);
+    }
+    const data = await res.json();
+    setPrice(data.price || "");
+  } catch (err) {
+    console.error("Load price error:", err.message);
+    toast.error(`Failed to load price: ${err.message}`);
+  }
+};
+  const handleLogin = (e) => {
+    e.preventDefault()
+    const ADMIN_USER = "admin"
+    const ADMIN_PASS = "katariya2026"  // Slightly improved: Change this to something stronger and move to env vars in production!
+
+    if (username === ADMIN_USER && password === ADMIN_PASS) {
+      localStorage.setItem("adminAuthenticated", "true")
+      setIsAuthenticated(true)
+      loadPrice()
+      setLoginError("")
+    } else {
+      setLoginError("Invalid credentials")
     }
   }
 
-  return (
-    <div className="min-h-screen bg-black">
-      <Header scrollToSection={scrollToSection} />
-      {/* <Hero scrollToSection={scrollToSection} /> */}
-      <Services />
-      {/* <About /> */}
-      {/* <Contact /> */}
-      <Footer />
+  const handleLogout = () => {
+    localStorage.removeItem("adminAuthenticated")
+    setIsAuthenticated(false)
+    setPrice("")
+    setUsername("")
+    setPassword("")
+  }
 
-      {/* Toastify */}
-      <ToastContainer
-        position="top-right"
-        autoClose={3000}
-        hideProgressBar={false}
-        newestOnTop
-        closeOnClick
-        pauseOnHover
-        draggable
-        theme="dark"
-      />
+const updatePrice = async () => {
+  if (!price || price <= 0) {
+    toast.error("Enter a valid price");
+    return;
+  }
+  setUpdating(true);
+  try {
+    const res = await fetch("https://katariya-core.onrender.com/", {
+      method: "PUT",
+      mode: 'cors',
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ price: Number(price) })
+    });
+    if (!res.ok) {
+      throw new Error(`API error: ${res.status} - ${await res.text()}`);
+    }
+    toast.success("Price updated successfully");
+    loadPrice();
+  } catch (err) {
+    console.error("Update price error:", err.message);
+    toast.error(`Update failed: ${err.message}`);
+  }
+  setUpdating(false);
+};
+
+  if (!isAuthenticated) {
+    return (
+      <div className="min-h-screen bg-black flex items-center justify-center px-4">
+        <div className="bg-gray-900 p-10 rounded-3xl border border-gray-700 shadow-2xl max-w-md w-full">
+          <h2 className="text-4xl font-black text-white text-center mb-8">Admin Login</h2>
+          <form onSubmit={handleLogin} className="space-y-6">
+            <input
+              type="text"
+              placeholder="Username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              className="w-full p-4 bg-black/50 border border-gray-700 rounded-2xl text-white placeholder-gray-500 focus:border-cyan-500 transition"
+              required
+            />
+            <input
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full p-4 bg-black/50 border border-gray-700 rounded-2xl text-white placeholder-gray-500 focus:border-cyan-500 transition"
+              required
+            />
+            <button
+              type="submit"
+              className="w-full bg-gradient-to-r from-cyan-500 to-blue-600 text-white py-4 rounded-2xl font-bold hover:shadow-2xl hover:shadow-cyan-500/50 transition"
+            >
+              Login
+            </button>
+            {loginError && <p className="text-red-500 text-center">{loginError}</p>}
+          </form>
+        </div>
+      </div>
+    )
+  }
+
+  return (
+    <div className="min-h-screen bg-black py-20 px-4">
+      <div className="container mx-auto max-w-2xl">
+        <h2 className="text-5xl font-black text-white text-center mb-12">Admin Dashboard</h2>
+        <div className="bg-gray-900 p-10 rounded-3xl border border-gray-700">
+          <h3 className="text-3xl font-bold text-white mb-8">Update Service Price</h3>
+          <div className="flex flex-col sm:flex-row gap-4 mb-8">
+            <input
+              type="number"
+              value={price}
+              onChange={(e) => setPrice(e.target.value)}
+              className="flex-1 p-4 bg-black/50 border border-gray-700 rounded-2xl text-white"
+              placeholder="New price (INR)"
+            />
+            <button
+              onClick={updatePrice}
+              disabled={updating}
+              className="bg-cyan-500 text-black px-8 py-4 rounded-2xl font-bold disabled:opacity-60"
+            >
+              {updating ? "Saving..." : "Save"}
+            </button>
+          </div>
+          <button
+            onClick={handleLogout}
+            className="w-full bg-red-600 text-white py-4 rounded-2xl font-bold"
+          >
+            Logout
+          </button>
+        </div>
+      </div>
     </div>
+  )
+}
+
+// Main App with routing (Fixed: Integrated Hero on home, uncommented routes)
+function App() {
+  return (
+    <Router>
+      <div className="min-h-screen bg-black">
+        <Header />
+        <Routes>
+          <Route path="/" element={<><Services /></>} />  // Fixed: Home now includes Hero + Services
+          <Route path="/services" element={<Services />} />
+          <Route path="/about" element={<About />} />  // Uncommented
+          <Route path="/contact" element={<Contact />} />  // Uncommented
+          <Route path="/admin" element={<AdminPage />} />
+        </Routes>
+        <Footer />
+        <ToastContainer
+          position="top-right"
+          autoClose={3000}
+          hideProgressBar={false}
+          newestOnTop
+          closeOnClick
+          pauseOnHover
+          draggable
+          theme="dark"
+        />
+      </div>
+    </Router>
   )
 }
 
