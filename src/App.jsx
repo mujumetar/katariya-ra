@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { TrendingUp, BarChart3, Users, Mail, CheckCircle, ArrowRight, Sparkles, Star, Zap, Award, Globe } from 'lucide-react'
 import { toast, ToastContainer } from 'react-toastify'
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom'
+import TermsPrivacy from './TermsPrivacy'
 
 // Header Component
 function Header() {
@@ -277,7 +278,7 @@ function Services() {
         </div>
 
         <div className="grid md:grid-cols-2 gap-10 mx-auto">
-          
+
 
           {/* Consultation Card */}
           <div className="group relative">
@@ -563,16 +564,35 @@ function Footer() {
                   className="w-32"  // Fixed: Changed w-30 to w-32
                 />
               </div>
+
             </div>
           </div>
-          <div className="text-center md:text-right">
-            <p className="text-gray-500 mb-2">
+          <div className="text-center md:text-right space-y-2">
+            <p className="text-gray-500">
               &copy; 2026 Katariya Research Analyst Hub. All rights reserved.
             </p>
+
+            <div className="flex justify-center md:justify-end gap-4 text-sm">
+              <Link
+                to="/legal"
+                className="text-gray-400 hover:text-cyan-400 transition"
+              >
+                Terms & Conditions
+              </Link>
+              <span className="text-gray-600">|</span>
+              <Link
+                to="/legal"
+                className="text-gray-400 hover:text-cyan-400 transition"
+              >
+                Privacy Policy
+              </Link>
+            </div>
+
             <p className="text-xs text-gray-600">
-              Empowering decisions through intelligence
+              Trading & Research services | Market risks apply
             </p>
           </div>
+
         </div>
       </div>
     </footer>
@@ -594,19 +614,19 @@ function AdminPage() {
     }
   }, [])
 
-const loadPrice = async () => {
-  try {
-    const res = await fetch("https://katariya-core.onrender.com/", { mode: 'cors' });
-    if (!res.ok) {
-      throw new Error(`API error: ${res.status} - ${await res.text()}`);
+  const loadPrice = async () => {
+    try {
+      const res = await fetch("https://katariya-core.onrender.com/", { mode: 'cors' });
+      if (!res.ok) {
+        throw new Error(`API error: ${res.status} - ${await res.text()}`);
+      }
+      const data = await res.json();
+      setPrice(data.price || "");
+    } catch (err) {
+      console.error("Load price error:", err.message);
+      toast.error(`Failed to load price: ${err.message}`);
     }
-    const data = await res.json();
-    setPrice(data.price || "");
-  } catch (err) {
-    console.error("Load price error:", err.message);
-    toast.error(`Failed to load price: ${err.message}`);
-  }
-};
+  };
   const handleLogin = (e) => {
     e.preventDefault()
     const ADMIN_USER = "admin"
@@ -630,30 +650,30 @@ const loadPrice = async () => {
     setPassword("")
   }
 
-const updatePrice = async () => {
-  if (!price || price <= 0) {
-    toast.error("Enter a valid price");
-    return;
-  }
-  setUpdating(true);
-  try {
-    const res = await fetch("https://katariya-core.onrender.com/", {
-      method: "PUT",
-      mode: 'cors',
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ price: Number(price) })
-    });
-    if (!res.ok) {
-      throw new Error(`API error: ${res.status} - ${await res.text()}`);
+  const updatePrice = async () => {
+    if (!price || price <= 0) {
+      toast.error("Enter a valid price");
+      return;
     }
-    toast.success("Price updated successfully");
-    loadPrice();
-  } catch (err) {
-    console.error("Update price error:", err.message);
-    toast.error(`Update failed: ${err.message}`);
-  }
-  setUpdating(false);
-};
+    setUpdating(true);
+    try {
+      const res = await fetch("https://katariya-core.onrender.com/", {
+        method: "PUT",
+        mode: 'cors',
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ price: Number(price) })
+      });
+      if (!res.ok) {
+        throw new Error(`API error: ${res.status} - ${await res.text()}`);
+      }
+      toast.success("Price updated successfully");
+      loadPrice();
+    } catch (err) {
+      console.error("Update price error:", err.message);
+      toast.error(`Update failed: ${err.message}`);
+    }
+    setUpdating(false);
+  };
 
   if (!isAuthenticated) {
     return (
@@ -736,6 +756,7 @@ function App() {
           <Route path="/about" element={<About />} />  // Uncommented
           <Route path="/contact" element={<Contact />} />  // Uncommented
           <Route path="/admin" element={<AdminPage />} />
+          <Route path="/legal" element={<TermsPrivacy />} />
         </Routes>
         <Footer />
         <ToastContainer
