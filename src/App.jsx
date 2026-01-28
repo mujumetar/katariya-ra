@@ -2,7 +2,9 @@ import { useState, useEffect } from 'react'
 import { TrendingUp, BarChart3, Users, Mail, CheckCircle, ArrowRight, Sparkles, Star, Zap, Award, Globe } from 'lucide-react'
 import { toast, ToastContainer } from 'react-toastify'
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom'
-import TermsPrivacy from './TermsPrivacy'
+import TermsPrivacy from './Terms'
+import Terms from './Terms'
+import Privacy from './Privacy'
 
 // Header Component
 function Header() {
@@ -573,19 +575,14 @@ function Footer() {
             </p>
 
             <div className="flex justify-center md:justify-end gap-4 text-sm">
-              <Link
-                to="/legal"
-                className="text-gray-400 hover:text-cyan-400 transition"
-              >
+              <Link to="/terms" className="hover:text-cyan-400">
                 Terms & Conditions
               </Link>
-              <span className="text-gray-600">|</span>
-              <Link
-                to="/legal"
-                className="text-gray-400 hover:text-cyan-400 transition"
-              >
+              <span>|</span>
+              <Link to="/privacy" className="hover:text-cyan-400">
                 Privacy Policy
               </Link>
+
             </div>
 
             <p className="text-xs text-gray-600">
@@ -756,7 +753,8 @@ function App() {
           <Route path="/about" element={<About />} />  // Uncommented
           <Route path="/contact" element={<Contact />} />  // Uncommented
           <Route path="/admin" element={<AdminPage />} />
-          <Route path="/legal" element={<TermsPrivacy />} />
+          <Route path="/terms" element={<Terms />} />
+          <Route path="/privacy" element={<Privacy />} />
         </Routes>
         <Footer />
         <ToastContainer
